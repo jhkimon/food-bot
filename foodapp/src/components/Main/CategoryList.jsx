@@ -9,17 +9,17 @@ const CategoryList = ({ categories, onCategoryClick }) => {
                     <div
                         key={index}
                         className="flex items-center justify-between mb-3 cursor-pointer"
-                        onDoubleClick={() => onCategoryClick(category.strCategory)}
+                        onClick={() => onCategoryClick(category.strCategory)}
                     >
                         <div className="flex items-center space-x-2">
                             <img
                                 src={category.strCategoryThumb}
                                 alt={category.strCategory}
-                                className="w-10 h-15 rounded-full"
+                                className="w-12 h-10 rounded-full"
                             />
                             <div>
                                 <p className="font-bold">{category.strCategory}</p>
-                                <p className="text-sm">{category.strCategoryDescription.slice(0, 80)}...</p>
+                                <p className="text-sm">{category.strCategoryDescription}</p>
                             </div>
                         </div>
                     </div>

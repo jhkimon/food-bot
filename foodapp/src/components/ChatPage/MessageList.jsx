@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 const MessageList = ({ messages }) => {
     const messageEndRef = useRef(null);
+
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -9,6 +10,21 @@ const MessageList = ({ messages }) => {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    const processMessageText = (text) => {
+        const parts = text.split(/(\d+\.)+/);
+        return parts.map((part, index) => (
+            <React.Fragment key={index}>
+                {index !== 1 && part.match(/^\d+\./) ? (
+                    <>
+                        <br />
+                        <br />
+                    </>
+                ) : null}
+                {part}
+            </React.Fragment>
+        ));
+    };
 
     return (
         <div className="flex flex-col flex-grow p-4 space-y-4 overflow-y-auto">
@@ -20,7 +36,7 @@ const MessageList = ({ messages }) => {
                         }`}
                     >
                         {message.image && <img src={message.image} alt={message.text} className="mb-2 rounded" />}
-                        {message.text}
+                        {processMessageText(message.text)}
                     </div>
                 </div>
             ))}

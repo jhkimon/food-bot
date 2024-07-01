@@ -10,7 +10,7 @@ const ChatHeader = ({ currentCategory }) => {
             />
             <div className="flex flex-col ml-2">
                 <h2 className="text-2xl font-bold">{currentCategory.strCategory}</h2>
-                <p className="text-center">{currentCategory.strCategoryDescription.slice(0, 80)}...</p>
+                <p className="text-center">{currentCategory.strCategoryDescription}</p>
             </div>
         </div>
     );

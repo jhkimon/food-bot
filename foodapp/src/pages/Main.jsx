@@ -10,6 +10,10 @@ const Main = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
+    const handleMyClick = () => {
+        navigate('/my-recipe');
+    };
+
     const handleCategoryClick = (categoryName) => {
         const newWindow = window.open(`/chat/${categoryName}`, '_blank', 'width=600,height=600');
         if (newWindow) {
@@ -19,16 +23,12 @@ const Main = () => {
         }
     };
 
-    const handleHomeClick = () => {
-        navigate('/');
-    };
-
     return (
         <div className="flex h-screen bg-gray-800 text-white">
             <SideBar />
             <div className="flex flex-col flex-1 m-2 p-4">
-                <Header onHomeClick={handleHomeClick} />
-                <UserProfile />
+                <Header />
+                <UserProfile handleMyClick={handleMyClick} />
                 <CategoryList categories={categories} onCategoryClick={handleCategoryClick} />
             </div>
             <FoodCategory setCategories={setCategories} />

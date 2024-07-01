@@ -1,4 +1,6 @@
-const QuickGPT = ({ userMessage, setMessages, messages }) => {
+import React, { useEffect } from 'react';
+
+const SummaryGPT = ({ userMessage, setMessages }) => {
     useEffect(() => {
         const fetchChatGPTResponse = async () => {
             if (userMessage) {
@@ -20,7 +22,7 @@ const QuickGPT = ({ userMessage, setMessages, messages }) => {
                         body: JSON.stringify({
                             model: 'gpt-3.5-turbo',
                             messages: [{ role: 'user', content: userMessage }],
-                            temperature: 0.7,
+                            temperature: 1.0,
                         }),
                     });
 
@@ -42,14 +44,13 @@ const QuickGPT = ({ userMessage, setMessages, messages }) => {
                 } catch (error) {
                     console.error('Error fetching ChatGPT response:', error);
                 }
-
-                // 요청 완료 후 userMessage 초기화
-                setUserMessage('');
             }
         };
 
         fetchChatGPTResponse();
-    }, [userMessage, setMessages, setUserMessage]);
+    }, [userMessage, setMessages]);
 
     return null;
 };
+
+export default SummaryGPT;

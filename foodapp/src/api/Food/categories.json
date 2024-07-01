@@ -1,0 +1,82 @@
+{
+    "categories": [
+        {
+            "idCategory": "1",
+            "strCategory": "Beef",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/beef.png",
+            "strCategoryDescription": "기본적인 고기를 활용한 요리에 대해서 물어봐주세요."
+        },
+        {
+            "idCategory": "2",
+            "strCategory": "Chicken",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/chicken.png",
+            "strCategoryDescription": "다양한 치킨을 활용한 요리에 대해서 물어봐주세요."
+        },
+        {
+            "idCategory": "3",
+            "strCategory": "Dessert",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/dessert.png",
+            "strCategoryDescription": "음식의 핵심은 디저트! 디저트에 대해 물어봐주세요."
+        },
+        {
+            "idCategory": "4",
+            "strCategory": "Lamb",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/lamb.png",
+            "strCategoryDescription": "다양한 양고기를 활용한 요리에 대해서 물어봐주세요."
+        },
+        {
+            "idCategory": "5",
+            "strCategory": "Miscellaneous",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/miscellaneous.png",
+            "strCategoryDescription": "위의 카테고리 이외에도 다양한 요리들이 있어요."
+        },
+        {
+            "idCategory": "6",
+            "strCategory": "Pasta",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/pasta.png",
+            "strCategoryDescription": "양식은 핵심은 파스타! 파스타는 저에게 맡겨주세요."
+        },
+        {
+            "idCategory": "7",
+            "strCategory": "Pork",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/pork.png",
+            "strCategoryDescription": "돼지고기를 활용한 요리에 대해서 물어봐주세요."
+        },
+        {
+            "idCategory": "8",
+            "strCategory": "Seafood",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/seafood.png",
+            "strCategoryDescription": "해산물을 활용한 요리에 대해서 물어봐주세요."
+        },
+        {
+            "idCategory": "9",
+            "strCategory": "Side",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/side.png",
+            "strCategoryDescription": "메인 음식에 맞는 사이드 메뉴를 같이 만들어요."
+        },
+        {
+            "idCategory": "10",
+            "strCategory": "Starter",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/starter.png",
+            "strCategoryDescription": "식욕을 돋구는 에피타이저! 저랑 같이 만들어봐요."
+        },
+        {
+            "idCategory": "11",
+            "strCategory": "Vegan",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/vegan.png",
+            "strCategoryDescription": "채소를 활용한 요리가 필요하다면 저에게 물어봐주세요."
+        },
+        {
+            "idCategory": "12",
+            "strCategory": "Vegetarian",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/vegetarian.png",
+            "strCategoryDescription": "비건을 위한 요리를 원한다면 저에게 물어봐주세요."
+        },
+        {
+            "idCategory": "13",
+            "strCategory": "Breakfast",
+            "strCategoryThumb": "https://www.themealdb.com/images/category/breakfast.png",
+            "strCategoryDescription": "아침을 깨우기 위한 요리는 저에게 물어봐주세요."
+        }
+    ]
+}

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import FoodFilterCategory from '../api/Food/FoodFilterCategory';
-import ChatGPT from '../api/GPT/ChatGPT';
+import FoodCategory from '../api/Food/FoodCategory';
 import ChatHeader from '../components/ChatPage/ChatHeader';
 import MessageList from '../components/ChatPage/MessageList';
 import MessageInput from '../components/ChatPage/MessageInput';
 import QuickMenu from '../components/ChatPage/QuickMenu';
+import SummaryGPT from '../api/GPT/SummaryGPT'; // Assuming correct path to SummaryGPT
 
 const ChatPage = () => {
     const { category } = useParams();
@@ -18,19 +19,12 @@ const ChatPage = () => {
     const [newMessage, setNewMessage] = useState('');
     const [userMessage, setUserMessage] = useState('');
     const [mealsToShow, setMealsToShow] = useState([]);
+    const messageEndRef = useRef(null);
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            const url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
-            const response = await fetch(url);
-            const data = await response.json();
-            setCategories(data.categories);
-            const cat = data.categories.find((cat) => cat.strCategory.toLowerCase() === category.toLowerCase());
-            setCurrentCategory(cat);
-        };
-
-        fetchCategories();
-    }, [category]);
+        const cat = categories.find((cat) => cat.strCategory.toLowerCase() === category.toLowerCase());
+        setCurrentCategory(cat);
+    }, [category, categories]);
 
     useEffect(() => {
         const fetchMeals = async () => {
@@ -77,7 +71,16 @@ const ChatPage = () => {
             const response = await fetch(url);
             const data = await response.json();
             const instructions = data.meals[0].strInstructions;
-            const summaryRequestMessage = `요리 ${strMeal}를 만드는 순서를 요약해주세요.`;
+
+            const recipe = {
+                idMeal,
+                strMeal,
+                strMealThumb,
+                instructions,
+            };
+            localStorage.setItem('lastRecipe', JSON.stringify(recipe));
+
+            const summaryRequestMessage = `요리 ${strMeal}를 만드는 순서를 요약해주세요. 구체적인 숫자를 같이 제시해주세요.`;
             setUserMessage(summaryRequestMessage);
         } catch (error) {
             console.error('Error fetching meal details:', error);
@@ -90,6 +93,7 @@ const ChatPage = () => {
                 {currentCategory && <ChatHeader currentCategory={currentCategory} />}
                 <QuickMenu meals={mealsToShow} handleQuickMenuClick={handleQuickMenuClick} />
                 <MessageList messages={messages} />
+                <div ref={messageEndRef} />
                 <MessageInput
                     newMessage={newMessage}
                     setNewMessage={setNewMessage}
@@ -98,7 +102,8 @@ const ChatPage = () => {
                 />
             </div>
             <FoodFilterCategory setMeal={setMeals} category={category} />
-            {userMessage && <ChatGPT userMessage={userMessage} setMessages={setMessages} messages={messages} />}
+            <FoodCategory setCategories={setCategories} />
+            {userMessage && <SummaryGPT userMessage={userMessage} setMessages={setMessages} />}
         </div>
     );
 };
