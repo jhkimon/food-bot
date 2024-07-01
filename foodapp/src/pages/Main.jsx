@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SideBar from '../components/SideBar';
-import FoodCategory from '../api/FoodCategory';
+import FoodCategory from '../api/Food/FoodCategory';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';

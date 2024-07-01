@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import FoodData from '../api/Food/FoodData';
 
 const ChatPage = () => {
     const { category } = useParams();
     const [categories, setCategories] = useState([]);
     const [currentCategory, setCurrentCategory] = useState(null);
+    const [meals, setMeals] = useState([]);
     const [messages, setMessages] = useState([
         { id: 1, text: `안녕하세요. ${category} 챗봇입니다. 무엇을 도와드릴까요?`, sender: 'chat' },
     ]);
@@ -23,10 +25,29 @@ const ChatPage = () => {
         fetchCategories();
     }, [category]);
 
+    useEffect(() => {
+        if (meals.length > 0) {
+            const mealMessages = meals.map((meal, index) => ({
+                id: messages.length + index + 1,
+                text: meal.strMeal,
+                image: meal.strMealThumb,
+                sender: 'chat',
+            }));
+            setMessages([...messages, ...mealMessages]);
+        }
+    }, [meals]);
+
     const handleSendMessage = () => {
         if (newMessage.trim() !== '') {
             setMessages([...messages, { id: messages.length + 1, text: newMessage, sender: 'self' }]);
             setNewMessage('');
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
         }
     };
 
@@ -57,25 +78,36 @@ const ChatPage = () => {
                                     message.sender === 'self' ? 'bg-yellow-500' : 'bg-gray-700'
                                 }`}
                             >
+                                {message.image && (
+                                    <img src={message.image} alt={message.text} className="mb-2 rounded" />
+                                )}
                                 {message.text}
                             </div>
                         </div>
                     ))}
                 </div>
-                <div className="flex p-4 border-t border-gray-700">
-                    <input
-                        type="text"
-                        className="flex-grow p-2 mr-2 text-black rounded-lg"
-                        placeholder="Type your message..."
+                <div className="flex flex-col p-4 border-t border-gray-700">
+                    <textarea
+                        className="flex-grow p-2 text-black rounded-lg h-24 resize-none"
+                        placeholder="메시지를 입력해주세요."
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        onKeyDown={handleKeyPress}
                     />
-                    <button className="px-4 py-2 text-white bg-blue-500 rounded-lg" onClick={handleSendMessage}>
+                    <button
+                        className={`p-2 mt-3 rounded-lg ${
+                            newMessage.trim()
+                                ? 'bg-yellow-500 text-white'
+                                : 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                        }`}
+                        onClick={handleSendMessage}
+                        disabled={!newMessage.trim()}
+                    >
                         Send
                     </button>
                 </div>
             </div>
+            <FoodData setMeal={setMeals} category={category} />
         </div>
     );
 };
