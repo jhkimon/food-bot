@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import FoodData from '../api/Food/FoodData';
+import FoodFilterCategory from '../api/Food/FoodFilterCategory';
+import ChatGPT from '../api/GPT/ChatGPT';
+import ChatHeader from '../components/ChatPage/ChatHeader';
+import MessageList from '../components/ChatPage/MessageList';
+import MessageInput from '../components/ChatPage/MessageInput';
+import QuickMenu from '../components/ChatPage/QuickMenu';
 
 const ChatPage = () => {
     const { category } = useParams();
@@ -11,6 +16,8 @@ const ChatPage = () => {
         { id: 1, text: `안녕하세요. ${category} 챗봇입니다. 무엇을 도와드릴까요?`, sender: 'chat' },
     ]);
     const [newMessage, setNewMessage] = useState('');
+    const [userMessage, setUserMessage] = useState('');
+    const [mealsToShow, setMealsToShow] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -26,20 +33,24 @@ const ChatPage = () => {
     }, [category]);
 
     useEffect(() => {
-        if (meals.length > 0) {
-            const mealMessages = meals.map((meal, index) => ({
-                id: messages.length + index + 1,
-                text: meal.strMeal,
-                image: meal.strMealThumb,
-                sender: 'chat',
-            }));
-            setMessages([...messages, ...mealMessages]);
-        }
-    }, [meals]);
+        const fetchMeals = async () => {
+            const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            setMeals(data.meals);
+
+            const randomMeals = data.meals.sort(() => 0.5 - Math.random()).slice(0, 3);
+            setMealsToShow(randomMeals);
+        };
+
+        fetchMeals();
+    }, [category]);
 
     const handleSendMessage = () => {
         if (newMessage.trim() !== '') {
-            setMessages([...messages, { id: messages.length + 1, text: newMessage, sender: 'self' }]);
+            const newMsg = { id: messages.length + 1, text: newMessage, sender: 'self' };
+            setMessages((prevMessages) => [...prevMessages, newMsg]);
+            setUserMessage(newMessage);
             setNewMessage('');
         }
     };
@@ -51,63 +62,43 @@ const ChatPage = () => {
         }
     };
 
+    const handleQuickMenuClick = async (meal) => {
+        const { idMeal, strMeal, strMealThumb } = meal;
+        const firstMessage = {
+            id: Date.now(),
+            text: `${strMeal}`,
+            image: strMealThumb,
+            sender: 'chat',
+        };
+        setMessages((prevMessages) => [...prevMessages, firstMessage]);
+
+        try {
+            const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const instructions = data.meals[0].strInstructions;
+            const summaryRequestMessage = `요리 ${strMeal}를 만드는 순서를 요약해주세요.`;
+            setUserMessage(summaryRequestMessage);
+        } catch (error) {
+            console.error('Error fetching meal details:', error);
+        }
+    };
+
     return (
         <div className="flex h-screen bg-gray-800 text-white">
             <div className="flex flex-col flex-grow">
-                {currentCategory && (
-                    <div className="flex items-center p-4 border-b border-gray-700">
-                        <img
-                            src={currentCategory.strCategoryThumb}
-                            alt={currentCategory.strCategory}
-                            className="w-20 h-15 rounded-full"
-                        />
-                        <div className="flex flex-col ml-2">
-                            <h2 className="text-2xl font-bold">{currentCategory.strCategory}</h2>
-                            <p className="text-center">{currentCategory.strCategoryDescription.slice(0, 80)}...</p>
-                        </div>
-                    </div>
-                )}
-                <div className="flex flex-col flex-grow p-4 space-y-4 overflow-y-auto">
-                    {messages.map((message) => (
-                        <div
-                            key={message.id}
-                            className={`flex ${message.sender === 'self' ? 'justify-end' : 'justify-start'}`}
-                        >
-                            <div
-                                className={`p-2 rounded-lg max-w-xs ${
-                                    message.sender === 'self' ? 'bg-yellow-500' : 'bg-gray-700'
-                                }`}
-                            >
-                                {message.image && (
-                                    <img src={message.image} alt={message.text} className="mb-2 rounded" />
-                                )}
-                                {message.text}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="flex flex-col p-4 border-t border-gray-700">
-                    <textarea
-                        className="flex-grow p-2 text-black rounded-lg h-24 resize-none"
-                        placeholder="메시지를 입력해주세요."
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                    />
-                    <button
-                        className={`p-2 mt-3 rounded-lg ${
-                            newMessage.trim()
-                                ? 'bg-yellow-500 text-white'
-                                : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                        }`}
-                        onClick={handleSendMessage}
-                        disabled={!newMessage.trim()}
-                    >
-                        Send
-                    </button>
-                </div>
+                {currentCategory && <ChatHeader currentCategory={currentCategory} />}
+                <QuickMenu meals={mealsToShow} handleQuickMenuClick={handleQuickMenuClick} />
+                <MessageList messages={messages} />
+                <MessageInput
+                    newMessage={newMessage}
+                    setNewMessage={setNewMessage}
+                    handleSendMessage={handleSendMessage}
+                    handleKeyPress={handleKeyPress}
+                />
             </div>
-            <FoodData setMeal={setMeals} category={category} />
+            <FoodFilterCategory setMeal={setMeals} category={category} />
+            {userMessage && <ChatGPT userMessage={userMessage} setMessages={setMessages} messages={messages} />}
         </div>
     );
 };

@@ -1,21 +1,28 @@
 import React, { useEffect } from 'react';
 
-const FoodData = ({ setMeal, category }) => {
+const FoodData = ({ idMeal, setMessages }) => {
     useEffect(() => {
         const fetchData = async () => {
-            const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+            const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                console.log(data);
-                setMeal(data.meals);
+                const instructions = data.meals[0].strInstructions;
+
+                const secondMessage = {
+                    id: Date.now() + 1,
+                    text: instructions,
+                    sender: 'chatgpt',
+                };
+
+                setMessages((prevMessages) => [...prevMessages, secondMessage]);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-    }, [category, setMeal]);
+    }, [idMeal, setMessages]);
 
     return null;
 };
