@@ -8,7 +8,7 @@ const QuickMenu = ({ meals, handleQuickMenuClick }) => {
                 {meals.map((meal, index) => (
                     <button
                         key={index}
-                        className="bg-gray-700 text-white text-xs px-4 py-2 rounded mb-2"
+                        className="bg-gray-700 text-white text-xs px-4 py-2 rounded mb-2 w-full sm:w-auto"
                         onClick={() => handleQuickMenuClick(meal)}
                         style={{ minWidth: '150px', maxWidth: '300px' }}
                     >
