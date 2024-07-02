@@ -26,10 +26,12 @@ const Main = () => {
     return (
         <div className="flex h-screen bg-gray-800 text-white">
             <SideBar />
-            <div className="flex flex-col flex-1 m-2 p-4">
+            <div className="flex flex-col flex-1 m-2">
                 <Header />
-                <UserProfile handleMyClick={handleMyClick} />
-                <CategoryList categories={categories} onCategoryClick={handleCategoryClick} />
+                <div className="flex-1 overflow-y-auto p-4">
+                    <UserProfile handleMyClick={handleMyClick} />
+                    <CategoryList categories={categories} onCategoryClick={handleCategoryClick} />
+                </div>
             </div>
             <FoodCategory setCategories={setCategories} />
         </div>
