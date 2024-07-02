@@ -15,7 +15,7 @@ const Main = () => {
     };
 
     const handleCategoryClick = (categoryName) => {
-        const newWindow = window.open(`/chat/${categoryName}`, '_blank', 'width=600,height=600');
+        const newWindow = window.open(`/chat/${categoryName}`, '_blank', 'width=800,height=600');
         if (newWindow) {
             newWindow.focus();
         } else {

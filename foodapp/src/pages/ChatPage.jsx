@@ -6,7 +6,7 @@ import ChatHeader from '../components/ChatPage/ChatHeader';
 import MessageList from '../components/ChatPage/MessageList';
 import MessageInput from '../components/ChatPage/MessageInput';
 import QuickMenu from '../components/ChatPage/QuickMenu';
-import SummaryGPT from '../api/GPT/SummaryGPT'; // Assuming correct path to SummaryGPT
+import SummaryGPT from '../api/GPT/SummaryGPT';
 
 const ChatPage = () => {
     const { category } = useParams();
@@ -88,7 +88,7 @@ const ChatPage = () => {
     };
 
     return (
-        <div className="flex h-screen bg-gray-800 text-white">
+        <div className="flex h-screen min-h-screen min-w-screen bg-gray-800 text-white">
             <div className="flex flex-col flex-grow">
                 {currentCategory && <ChatHeader currentCategory={currentCategory} />}
                 <QuickMenu meals={mealsToShow} handleQuickMenuClick={handleQuickMenuClick} />
