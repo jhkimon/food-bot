@@ -44,7 +44,8 @@ https://github.com/jhkimon/food-bot/assets/113989454/d07cc325-eec7-407b-9f15-8fa
 
 * 챗봇 질문 기능
 
-https://github.com/jhkimon/food-bot/assets/113989454/df7e6c4f-6ca9-404f-899b-7e9e1571b15d
+https://github.com/jhkimon/food-bot/assets/113989454/a38e5105-5d5e-4be2-a58b-e44d6412cf67
+
 
 ## 설치 및 사용 방법
 
