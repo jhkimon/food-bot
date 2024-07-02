@@ -32,10 +32,20 @@ const MessageList = ({ messages, setMessages, showCheckboxes }) => {
         );
     };
 
+    const handleItemClick = (id) => {
+        if (showCheckboxes) {
+            toggleSelectMessage(id);
+        }
+    };
+
     return (
         <div className="flex flex-col flex-grow p-4 space-y-4 overflow-y-auto">
             {messages.map((message) => (
-                <div key={message.id} className={`flex ${message.sender === 'self' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                    key={message.id}
+                    className={`flex ${message.sender === 'self' ? 'justify-end' : 'justify-start'}`}
+                    onClick={() => handleItemClick(message.id)}
+                >
                     <div
                         className={`p-2 text-sm rounded-lg max-w-xs ${
                             message.sender === 'self' ? 'bg-yellow-500' : 'bg-gray-700'

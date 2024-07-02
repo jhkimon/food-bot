@@ -23,15 +23,22 @@ const MyRecipe = () => {
         });
 
         const parts = text.split(/(\d+\.)+/);
-        return parts.map((part, index) => (
+        const messageParts = parts.map((part, index) => (
             <React.Fragment key={index}>
-                {index !== 0 && part.match(/^\d+\./) ? <br /> : null}
+                {index !== 1 && part.match(/^\d+\./) ? <br /> : null}
                 {part}
-                {index === 0 && <span className="text-sm text-gray-500 ml-2">({formattedTimestamp})</span>}
             </React.Fragment>
         ));
-    };
 
+        messageParts.push(
+            <React.Fragment key="timestamp">
+                <br />
+                <span className="text-sm text-gray-500 ml-2">({formattedTimestamp})</span>
+            </React.Fragment>
+        );
+
+        return messageParts;
+    };
     useEffect(() => {
         const storedMessages = JSON.parse(localStorage.getItem('savedMessages')) || [];
         setMessages(storedMessages);
