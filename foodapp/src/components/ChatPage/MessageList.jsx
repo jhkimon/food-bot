@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const MessageList = ({ messages }) => {
+const MessageList = ({ messages, setMessages, showCheckboxes }) => {
     const messageEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -26,6 +26,12 @@ const MessageList = ({ messages }) => {
         ));
     };
 
+    const toggleSelectMessage = (id) => {
+        setMessages((prev) =>
+            prev.map((message) => (message.id === id ? { ...message, selected: !message.selected } : message))
+        );
+    };
+
     return (
         <div className="flex flex-col flex-grow p-4 space-y-4 overflow-y-auto">
             {messages.map((message) => (
@@ -33,17 +39,26 @@ const MessageList = ({ messages }) => {
                     <div
                         className={`p-2 text-sm rounded-lg max-w-xs ${
                             message.sender === 'self' ? 'bg-yellow-500' : 'bg-gray-700'
-                        }`}
+                        } ${message.selected ? 'bg-opacity-75' : 'bg-opacity-100'}`}
                     >
                         {message.image && (
                             <img
                                 src={message.image}
                                 alt={message.text}
-                                className="mb-2 rounded w-48 h-48 object-cover"
+                                className="mb-2 rounded w-32 h-32 object-cover"
                             />
                         )}
                         {processMessageText(message.text)}
                     </div>
+                    {showCheckboxes && (
+                        <input
+                            type="checkbox"
+                            checked={message.selected || false}
+                            onChange={() => toggleSelectMessage(message.id)}
+                            className="ml-2 transform scale-400"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    )}
                 </div>
             ))}
             <div ref={messageEndRef} />

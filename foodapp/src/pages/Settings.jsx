@@ -8,7 +8,7 @@ const Settings = () => {
     return (
         <div className="flex h-screen bg-gray-800 text-white">
             <SideBar />
-            <div className="flex flex-col flex-1 m-2 p-4">
+            <div className="flex flex-col flex-1 m-2">
                 <Header />
             </div>
         </div>

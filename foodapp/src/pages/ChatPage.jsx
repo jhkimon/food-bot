@@ -19,6 +19,7 @@ const ChatPage = () => {
     const [newMessage, setNewMessage] = useState('');
     const [userMessage, setUserMessage] = useState('');
     const [mealsToShow, setMealsToShow] = useState([]);
+    const [showCheckboxes, setShowCheckboxes] = useState(false);
     const messageEndRef = useRef(null);
 
     useEffect(() => {
@@ -32,7 +33,6 @@ const ChatPage = () => {
             const response = await fetch(url);
             const data = await response.json();
             setMeals(data.meals);
-
             const randomMeals = data.meals.sort(() => 0.5 - Math.random()).slice(0, 3);
             setMealsToShow(randomMeals);
         };
@@ -87,18 +87,41 @@ const ChatPage = () => {
         }
     };
 
+    const toggleShowCheckboxes = () => {
+        setShowCheckboxes((prev) => !prev);
+    };
+
+    const saveSelectedMessages = () => {
+        const selectedMessages = messages.filter((message) => message.selected);
+        const timestamp = new Date().toISOString();
+        const messagesToSave = selectedMessages.map((message) => ({
+            ...message,
+            timestamp: timestamp,
+        }));
+
+        let savedMessages = JSON.parse(localStorage.getItem('savedMessages')) || [];
+        savedMessages = [...savedMessages, ...messagesToSave];
+        localStorage.setItem('savedMessages', JSON.stringify(savedMessages));
+
+        setMessages((prevMessages) => prevMessages.map((message) => ({ ...message, selected: false })));
+        setShowCheckboxes(false);
+    };
+
     return (
         <div className="flex h-screen min-h-screen min-w-screen bg-gray-800 text-white">
             <div className="flex flex-col flex-grow">
                 {currentCategory && <ChatHeader currentCategory={currentCategory} />}
                 <QuickMenu meals={mealsToShow} handleQuickMenuClick={handleQuickMenuClick} />
-                <MessageList messages={messages} />
+                <MessageList messages={messages} setMessages={setMessages} showCheckboxes={showCheckboxes} />
                 <div ref={messageEndRef} />
                 <MessageInput
                     newMessage={newMessage}
                     setNewMessage={setNewMessage}
                     handleSendMessage={handleSendMessage}
                     handleKeyPress={handleKeyPress}
+                    toggleShowCheckboxes={toggleShowCheckboxes}
+                    saveSelectedMessages={saveSelectedMessages}
+                    showCheckboxes={showCheckboxes}
                 />
             </div>
             <FoodFilterCategory setMeal={setMeals} category={category} />
