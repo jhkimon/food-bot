@@ -19,7 +19,7 @@
 
 <br/>
 
-React와 OpenAI (ChatGPT)를 활용한 프로젝트로, ChatGPT와의 채팅을 통해 주요 음식의 레시피를 확인하고 저장할 수 있는 앱입니다.
+React와 OpenAI (ChatGPT)를 활용한 프로젝트로, ChatGPT와의 채팅을 통해 주요 음식의 레시피를 확인하고 저장할 수 있는 앱입니다. 반응형으로 제작하여 모바일에서도 확인 가능합니다.
 
 <p align="center">
   <img width="443" alt="Screenshot 2024-07-03 at 1 36 30 AM" src="https://github.com/jhkimon/food-bot/assets/113989454/86553943-c172-4b25-a4ee-303120b80a8a">
